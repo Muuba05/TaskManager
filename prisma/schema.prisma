@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model staff {
+  staff_id Int    @id @default(autoincrement())
+  name     String
+  tasks    task[]
+}
+
+model client {
+  client_id        Int    @id @default(autoincrement())
+  name             String
+  telephone_number Int
+  tasks            task[]
+}
+
+model task {
+  task_id        Int         @id @default(autoincrement())
+  description    String
+  priority_id    Int
+  created_date   DateTime
+  resolved_date  DateTime?
+  client_id      Int
+  staff_id       Int
+  task_status_id Int
+  client         client      @relation(fields: [client_id], references: [client_id])
+  staff          staff       @relation(fields: [staff_id], references: [staff_id])
+  priority       priority    @relation(fields: [priority_id], references: [priority_id])
+  task_status    task_status @relation(fields: [task_status_id], references: [task_status_id])
+  logs           log[]
+}
+
+model priority {
+  priority_id Int    @id @default(autoincrement())
+  description String
+  tasks       task[]
+}
+
+model task_status {
+  task_status_id Int    @id @default(autoincrement())
+  description    String
+  tasks          task[]
+}
+
+model log {
+  log_id       Int      @id @default(autoincrement())
+  task_id      Int
+  description  String
+  created_date DateTime @default(now())
+  task         task     @relation(fields: [task_id], references: [task_id])
+}
