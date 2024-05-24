@@ -5,8 +5,8 @@ const prisma = new PrismaClient();
 export default async function handler(req, res) {
     if (req.method == 'GET') {
         try {
-            const log = await prisma.log.findMany();
-            res.status(200).json(log);
+            const task_status = await prisma.task_status.findMany();
+            res.status(200).json(task_status);
         } catch(error) {
             res.status(500).json({ error: 'Error fetching clients'});
         }

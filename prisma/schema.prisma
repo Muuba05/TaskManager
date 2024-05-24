@@ -21,18 +21,18 @@ model client {
 }
 
 model task {
-  task_id        Int         @id @default(autoincrement())
-  description    String
-  priority_id    Int
-  created_date   DateTime
-  resolved_date  DateTime?
-  client_id      Int
-  staff_id       Int
-  task_status_id Int
-  client         client      @relation(fields: [client_id], references: [client_id])
-  staff          staff       @relation(fields: [staff_id], references: [staff_id])
-  priority       priority    @relation(fields: [priority_id], references: [priority_id])
-  task_status    task_status @relation(fields: [task_status_id], references: [task_status_id])
+  task_id        Int     @id @default(autoincrement())
+  description     String
+  priority        priority @relation(fields: [priority_id], references: [priority_id])
+  priority_id     Int
+  created_date    DateTime
+  resolved_date   DateTime?
+  client          client  @relation(fields: [client_id], references: [client_id])
+  client_id       Int
+  staff           staff   @relation(fields: [staff_id], references: [staff_id])
+  staff_id        Int
+  task_status     task_status @relation(fields: [task_status_id], references: [task_status_id])
+  task_status_id  Int
   logs           log[]
 }
 
