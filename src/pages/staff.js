@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import styles from '../styles/staff.module.css';
 
 export default function Staff() {
   const [staff, setStaff] = useState([]);
@@ -26,7 +27,6 @@ export default function Staff() {
   const handleAddStaff = async () => {
     console.log('Adding staff...', newStaff);
 
-    // Convert id to an integer
     const id = parseInt(newStaff.id, 10);
 
     if (isNaN(id)) {
@@ -34,7 +34,6 @@ export default function Staff() {
       return;
     }
 
-    // Create a payload with id as an integer
     const staffData = {
       id,
       name: newStaff.name,
@@ -64,10 +63,11 @@ export default function Staff() {
   };
 
   return (
-    <div>
-      <h1>Staff</h1>
-      <div>
+    <div className={styles.staffContainer}>
+      <h1 className={styles.staffHeader}>Staff</h1>
+      <div className={styles.formContainer}>
         <input
+          className={styles.input}
           type="text"
           name="name"
           value={newStaff.name}
@@ -75,20 +75,21 @@ export default function Staff() {
           placeholder="Enter staff name"
         />
         <input
+          className={styles.input}
           type="number"
           name="id"
           value={newStaff.id}
           onChange={handleInputChange}
           placeholder="Enter staff ID"
         />
-        <button onClick={handleAddStaff}>Add Staff</button>
+        <button className={styles.button} onClick={handleAddStaff}>Add Staff</button>
       </div>
       {staff.length === 0 ? (
         <p>No staff available.</p>
       ) : (
-        <ul>
+        <ul className={styles.ul}>
           {staff.map((staff) => (
-            <li key={staff.staff_id}>
+            <li className={styles.li} key={staff.staff_id}>
               <h2>{staff.name}</h2>
               <p>Staff ID: {staff.staff_id}</p>
             </li>

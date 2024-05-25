@@ -1,19 +1,19 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import styles from '../styles/tasks.module.css';
 
 export default function Tasks() {
   const [tasks, setTasks] = useState([]);
   const [newTaskDescription, setNewTaskDescription] = useState('');
-  const [newTaskPriorityId, setNewTaskPriorityId] = useState(''); 
-  const [newTaskClientId, setNewTaskClientId] = useState(''); 
-  const [newTaskStaffId, setNewTaskStaffId] = useState(''); 
-  const [newTaskStatusId, setNewTaskStatusId] = useState(''); 
+  const [newTaskPriorityId, setNewTaskPriorityId] = useState('');
+  const [newTaskClientId, setNewTaskClientId] = useState('');
+  const [newTaskStaffId, setNewTaskStaffId] = useState('');
+  const [newTaskStatusId, setNewTaskStatusId] = useState('');
 
   const [clients, setClients] = useState([]);
   const [priorities, setPriorities] = useState([]);
-  const [staff, setStaff] = useState([]); 
-  const [taskStatuses, setTaskStatuses] = useState([]); 
+  const [staff, setStaff] = useState([]);
+  const [taskStatuses, setTaskStatuses] = useState([]);
 
-  // Fetch all data once on mount
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -21,8 +21,8 @@ export default function Tasks() {
           fetch('/api/tasks'),
           fetch('/api/clients'),
           fetch('/api/priorities'),
-          fetch('/api/staff'), 
-          fetch('/api/task_status'), 
+          fetch('/api/staff'),
+          fetch('/api/task_status'),
         ]);
 
         const [tasksData, clientsData, prioritiesData, staffData, taskStatusesData] = await Promise.all([
@@ -44,7 +44,7 @@ export default function Tasks() {
     };
 
     fetchData();
-  }, []); // Empty dependency array means this runs once on mount
+  }, []);
 
   const handleNewTaskDescriptionChange = (e) => {
     setNewTaskDescription(e.target.value);
@@ -75,25 +75,21 @@ export default function Tasks() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           description: newTaskDescription,
-          priority_id: newTaskPriorityId, 
+          priority_id: newTaskPriorityId,
           client_id: newTaskClientId,
-          staff_id: newTaskStaffId, 
-          task_status_id: newTaskStatusId 
+          staff_id: newTaskStaffId,
+          task_status_id: newTaskStatusId,
         }),
       });
 
       if (res.ok) {
         const newTask = await res.json();
-
-        // Update the tasks state without mutating the original array
         setTasks([...tasks, newTask]);
-
-        // Reset the input fields
         setNewTaskDescription('');
         setNewTaskPriorityId('');
         setNewTaskClientId('');
         setNewTaskStaffId('');
-        setNewTaskStatusId(''); 
+        setNewTaskStatusId('');
       } else {
         console.error('Error creating new task');
       }
@@ -107,11 +103,10 @@ export default function Tasks() {
       const res = await fetch(`/api/tasks?taskId=${taskId}`, {
         method: 'DELETE',
       });
-  
+
       if (res.ok) {
-        // Update the tasks state by filtering out the deleted task
         setTasks(tasks.filter((task) => task.task_id !== taskId));
-        showAlert("Task deleted successfully");
+        showAlert('Task deleted successfully');
       } else {
         console.error('Error deleting task');
       }
@@ -127,9 +122,8 @@ export default function Tasks() {
       });
 
       if (res.ok) {
-        // Update the tasks state by filtering out the deleted task
         setTasks(tasks.filter((task) => task.task_id !== taskId));
-        showAlert("Task finished successfully");
+        showAlert('Task finished successfully');
       } else {
         console.error('Error finishing task');
       }
@@ -140,7 +134,7 @@ export default function Tasks() {
 
   const showAlert = (message) => {
     const alertContainer = document.createElement('div');
-    alertContainer.classList.add('alert');
+    alertContainer.classList.add(styles.alert);
     alertContainer.textContent = message;
     document.body.appendChild(alertContainer);
 
@@ -148,7 +142,7 @@ export default function Tasks() {
       document.body.removeChild(alertContainer);
     }, 5000);
   };
-  // Refetches tasks after adding a new one
+
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -160,10 +154,9 @@ export default function Tasks() {
       }
     };
 
-    fetchTasks(); 
-  }, [newTaskDescription]); 
+    fetchTasks();
+  }, [newTaskDescription]);
 
-  // Group tasks by status
   const groupedTasks = {};
   taskStatuses.forEach((status) => {
     groupedTasks[status.description] = tasks.filter(
@@ -172,19 +165,25 @@ export default function Tasks() {
   });
 
   return (
-    <div>
-      <h1>Tasks</h1>
-      <form onSubmit={handleSubmitNewTask}>
-        <label htmlFor="new-task-description">Description:</label>
+    <div className={styles.tasksContainer}>
+      <h1 className={styles.tasksHeader}>Tasks</h1>
+      <form className={styles.formContainer} onSubmit={handleSubmitNewTask}>
+        <label className={styles.label} htmlFor="new-task-description">Description:</label>
         <input
+          className={styles.input}
           type="text"
           id="new-task-description"
           value={newTaskDescription}
           onChange={handleNewTaskDescriptionChange}
         />
 
-        <label htmlFor="new-task-priority">Priority:</label>
-        <select id="new-task-priority" value={newTaskPriorityId} onChange={handleNewTaskPriorityChange}>
+        <label className={styles.label} htmlFor="new-task-priority">Priority:</label>
+        <select
+          className={styles.select}
+          id="new-task-priority"
+          value={newTaskPriorityId}
+          onChange={handleNewTaskPriorityChange}
+        >
           <option value="">Select Priority</option>
           {priorities.map((priority) => (
             <option key={priority.priority_id} value={priority.priority_id}>
@@ -193,8 +192,13 @@ export default function Tasks() {
           ))}
         </select>
 
-        <label htmlFor="new-task-client">Client:</label>
-        <select id="new-task-client" value={newTaskClientId} onChange={handleNewTaskClientChange}>
+        <label className={styles.label} htmlFor="new-task-client">Client:</label>
+        <select
+          className={styles.select}
+          id="new-task-client"
+          value={newTaskClientId}
+          onChange={handleNewTaskClientChange}
+        >
           <option value="">Select Client</option>
           {clients.map((client) => (
             <option key={client.client_id} value={client.client_id}>
@@ -203,8 +207,13 @@ export default function Tasks() {
           ))}
         </select>
 
-        <label htmlFor="new-task-staff">Staff:</label>
-        <select id="new-task-staff" value={newTaskStaffId} onChange={handleNewTaskStaffChange}>
+        <label className={styles.label} htmlFor="new-task-staff">Staff:</label>
+        <select
+          className={styles.select}
+          id="new-task-staff"
+          value={newTaskStaffId}
+          onChange={handleNewTaskStaffChange}
+        >
           <option value="">Select Staff</option>
           {staff.map((staffMember) => (
             <option key={staffMember.staff_id} value={staffMember.staff_id}>
@@ -213,8 +222,13 @@ export default function Tasks() {
           ))}
         </select>
 
-        <label htmlFor="new-task-status">Status:</label>
-        <select id="new-task-status" value={newTaskStatusId} onChange={handleNewTaskStatusChange}>
+        <label className={styles.label} htmlFor="new-task-status">Status:</label>
+        <select
+          className={styles.select}
+          id="new-task-status"
+          value={newTaskStatusId}
+          onChange={handleNewTaskStatusChange}
+        >
           <option value="">Select Status</option>
           {taskStatuses.map((status) => (
             <option key={status.task_status_id} value={status.task_status_id}>
@@ -223,18 +237,18 @@ export default function Tasks() {
           ))}
         </select>
 
-        <button type="submit">Add Task</button>
+        <button className={styles.button} type="submit">Add Task</button>
       </form>
 
       {Object.keys(groupedTasks).map((status) => (
         <div key={status}>
-          <h2>{status}</h2>
+          <h2 className={styles.tasksHeader}>{status}</h2>
           {groupedTasks[status].length === 0 ? (
             <p>No tasks in this status.</p>
           ) : (
-            <ul>
+            <ul className={styles.ul}>
               {groupedTasks[status].map((task) => (
-                <li key={task.task_id}>
+                <li className={styles.li} key={task.task_id}>
                   <h2>{task.description}</h2>
                   <p>Priority: {task.priorityDescription}</p>
                   <p>Client: {task.clientName}</p>
@@ -244,9 +258,9 @@ export default function Tasks() {
                   {task.resolved_date && (
                     <p>Resolved Date: {new Date(task.resolved_date).toLocaleDateString()}</p>
                   )}
-                  <button onClick={() => handleDeleteTask(task.task_id)}>Delete</button>
-                  {!task.resolved_date && ( // Only show the "Finish" button if the task isn't resolved
-                    <button onClick={() => handleTaskFinish(task.task_id)}>Complete</button>
+                  <button className={styles.button} onClick={() => handleDeleteTask(task.task_id)}>Delete</button>
+                  {!task.resolved_date && (
+                    <button className={styles.button} onClick={() => handleTaskFinish(task.task_id)}>Complete</button>
                   )}
                 </li>
               ))}

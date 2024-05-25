@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import styles from '../styles/client.module.css';
 
 export default function Client() {
   const [clients, setClients] = useState([]);
@@ -71,10 +72,11 @@ export default function Client() {
   };
 
   return (
-    <div>
-      <h1>Clients</h1>
-      <div>
+    <div className={styles.clientContainer}>
+      <h1 className={styles.clientHeader}>Clients</h1>
+      <div className={styles.formContainer}>
         <input
+          className={styles.input}
           type="text"
           name="name"
           value={newClient.name}
@@ -82,6 +84,7 @@ export default function Client() {
           placeholder="Enter client name"
         />
         <input
+          className={styles.input}
           type="number"
           name="id"
           value={newClient.id}
@@ -89,20 +92,21 @@ export default function Client() {
           placeholder="Enter client ID"
         />
         <input
+          className={styles.input}
           type="number"
           name="telephone_number"
           value={newClient.telephone_number}
           onChange={handleInputChange}
           placeholder="Enter telephone number"
         />
-        <button onClick={handleAddClient}>Add Client</button>
+        <button className={styles.button} onClick={handleAddClient}>Add Client</button>
       </div>
       {clients.length === 0 ? (
         <p>No clients available.</p>
       ) : (
-        <ul>
+        <ul className={styles.ul}>
           {clients.map((client) => (
-            <li key={client.client_id}>
+            <li className={styles.li} key={client.client_id}>
               <h2>{client.name}</h2>
               <p>Client ID: {client.client_id}</p>
               <p>Telephone Number: {client.telephone_number}</p>

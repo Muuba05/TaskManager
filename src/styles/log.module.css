@@ -1,0 +1,62 @@
+.logPageContainer {
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff; /* Light blue background */
+    color: #333;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .logHeader {
+    color: #1e90ff; /* Dodger blue */
+  }
+  
+  .noLogsMessage {
+    color: #1e90ff; /* Dodger blue */
+    margin-top: 20px;
+  }
+  
+  .logList {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .logItem {
+    background-color: #e6f7ff; /* Light blue background for log items */
+    border: 1px solid #b0e0e6; /* Light blue border */
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+  }
+  
+  .logDescription {
+    font-weight: bold;
+  }
+  
+  .logDate {
+    margin-top: 5px;
+    font-style: italic;
+  }
+  
+  .button {
+    background-color: #1e90ff; /* Dodger blue background */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .button:hover {
+    background-color: #1c86ee; /* Slightly darker blue on hover */
+  }
+  
+  .alert {
+    background-color: #ffcccb; /* Light red background */
+    color: #333;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    text-align: center;
+  }
+  

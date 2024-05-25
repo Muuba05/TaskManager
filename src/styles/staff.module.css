@@ -1,0 +1,55 @@
+.staff-container {
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff; /* Light blue background */
+    color: #333;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .staff-header {
+    color: #1e90ff; /* Dodger blue */
+  }
+  
+  .form-container {
+    background-color: #e6f7ff; /* Light blue background for form */
+    border: 1px solid #b0e0e6; /* Light blue border */
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #b0e0e6;
+    border-radius: 5px;
+  }
+  
+  .button {
+    background-color: #1e90ff; /* Dodger blue background */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .button:hover {
+    background-color: #1c86ee; /* Slightly darker blue on hover */
+  }
+  
+  .ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .li {
+    background-color: #f0f8ff; /* Light blue background for list items */
+    border: 1px solid #b0e0e6; /* Light blue border */
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+  }
+  
