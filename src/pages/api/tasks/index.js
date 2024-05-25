@@ -21,7 +21,6 @@ export default async function handler(req, res) {
         task_statusDescription: task.task_status.description,
         clientName: task.client.name,
         staffName: task.staff.name,
-        // Add the description field
       }));
       console.log("Database connection successful. Retrieved tasks:", tasks);
       res.status(200).json(formattedTasks);
@@ -48,28 +47,51 @@ export default async function handler(req, res) {
           created_date: new Date(),
         },
       });
-      res.status(201).json(task);
-    } catch (error) {
-      res.status(500).json({ error: 'Error creating task' });
-    }
-  } else if (req.method === 'PUT') { 
-    const { description, priority_id, client_id, staff_id, task_status_id } = req.body;
-    try {
-      const task = await prisma.task.create({
+      await prisma.log.create({
         data: {
-          description,
-          priority: { connect: { id: priority_id } },
-          client: { connect: { id: client_id } },
-          staff: { connect: { id: staff_id } },
-          task_status: { connect: { id: task_status_id } },
-          created_date: new Date(),
-        },
+          task: { connect: { task_id: task.task_id } },
+          description: `Task "${task.description}" created.`
+        }
       });
       res.status(201).json(task);
     } catch (error) {
       res.status(500).json({ error: 'Error creating task' });
     }
-  } else {
-    res.status(405).end();
+  } else if (req.method === 'DELETE') {
+    const taskId = parseInt(req.query.taskId, 10);
+    console.log("task id is", taskId)
+    try {
+      const deletedTask = await prisma.task.delete({
+        where: {
+          task_id: taskId, 
+        },
+      });
+      if (!deletedTask.task_id) {
+        throw new Error('Task not found!');
+      }
+      await prisma.log.create({
+        data: {
+          deletedTask: { connect: { task_id: deletedTask.task_id } },
+          description: `Task "${deletedTask.description}" deleted.`,
+          // Add other log properties if needed 
+          // For example, if you want to add staff and client information:
+          staff: deletedTask.staff ? {
+            connect: { staff_id: deletedTask.staff.staff_id }
+          } : null,
+          client: deletedTask.client ? {
+            connect: { client_id: deletedTask.client.client_id }
+          } 
+          : null,
+          task: {
+            connect: { task_id: deletedTask.task_id }
+          },
+        }
+      });
+      res.status(200).json(deletedTask);
+    } catch (error) {
+      res.status(500).json({ error: 'Error deleting task' });
+    }
+  }  else {
+    res.status(405).json({ error: 'Method not allowed' });
   }
 }

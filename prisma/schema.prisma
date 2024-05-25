@@ -35,7 +35,13 @@ model task {
   task_status_id  Int
   logs           log[]
 }
-
+model log {
+  log_id     Int      @id @default(autoincrement())
+  task_id    Int
+  description String
+  created_date DateTime @default(now())
+  task       task     @relation(fields: [task_id], references: [task_id], onDelete: Cascade)
+}
 model priority {
   priority_id Int    @id @default(autoincrement())
   description String
@@ -48,10 +54,4 @@ model task_status {
   tasks          task[]
 }
 
-model log {
-  log_id       Int      @id @default(autoincrement())
-  task_id      Int
-  description  String
-  created_date DateTime @default(now())
-  task         task     @relation(fields: [task_id], references: [task_id])
-}
+

@@ -13,6 +13,7 @@ export default function Tasks() {
   const [staff, setStaff] = useState([]); 
   const [taskStatuses, setTaskStatuses] = useState([]); 
 
+  // Fetch all data once on mount
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -43,7 +44,7 @@ export default function Tasks() {
     };
 
     fetchData();
-  }, []);
+  }, []); // Empty dependency array means this runs once on mount
 
   const handleNewTaskDescriptionChange = (e) => {
     setNewTaskDescription(e.target.value);
@@ -101,6 +102,75 @@ export default function Tasks() {
     }
   };
 
+  const handleDeleteTask = async (taskId) => {
+    try {
+      const res = await fetch(`/api/tasks?taskId=${taskId}`, {
+        method: 'DELETE',
+      });
+  
+      if (res.ok) {
+        // Update the tasks state by filtering out the deleted task
+        setTasks(tasks.filter((task) => task.task_id !== taskId));
+        showAlert("Task deleted successfully");
+      } else {
+        console.error('Error deleting task');
+      }
+    } catch (error) {
+      console.error('Error deleting task:', error);
+    }
+  };
+
+  const handleTaskFinish = async (taskId) => {
+    try {
+      const res = await fetch(`/api/tasks/finish?taskId=${taskId}`, {
+        method: 'PUT',
+      });
+
+      if (res.ok) {
+        // Update the tasks state by filtering out the deleted task
+        setTasks(tasks.filter((task) => task.task_id !== taskId));
+        showAlert("Task finished successfully");
+      } else {
+        console.error('Error finishing task');
+      }
+    } catch (error) {
+      console.error('Error finishing task:', error);
+    }
+  };
+
+  const showAlert = (message) => {
+    const alertContainer = document.createElement('div');
+    alertContainer.classList.add('alert');
+    alertContainer.textContent = message;
+    document.body.appendChild(alertContainer);
+
+    setTimeout(() => {
+      document.body.removeChild(alertContainer);
+    }, 5000);
+  };
+  // Refetches tasks after adding a new one
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const res = await fetch('/api/tasks');
+        const tasksData = await res.json();
+        setTasks(tasksData);
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      }
+    };
+
+    fetchTasks(); 
+  }, [newTaskDescription]); 
+
+  // Group tasks by status
+  const groupedTasks = {};
+  taskStatuses.forEach((status) => {
+    groupedTasks[status.description] = tasks.filter(
+      (task) => task.task_statusDescription === status.description
+    );
+  });
+
   return (
     <div>
       <h1>Tasks</h1>
@@ -156,25 +226,34 @@ export default function Tasks() {
         <button type="submit">Add Task</button>
       </form>
 
-      {tasks.length === 0 ? (
-        <p>No tasks available.</p>
-      ) : (
-        <ul>
-          {tasks.map((task) => (
-            <li key={task.task_id}>
-              <h2>{task.description}</h2>
-              <p>Priority: {task.priorityDescription}</p>
-              <p>Client: {task.clientName}</p>
-              <p>Staff: {task.staffName}</p>
-              <p>Status: {task.task_statusDescription}</p>
-              <p>Created Date: {new Date(task.created_date).toLocaleDateString()}</p>
-              {task.resolved_date && (
-                <p>Resolved Date: {new Date(task.resolved_date).toLocaleDateString()}</p>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
+      {Object.keys(groupedTasks).map((status) => (
+        <div key={status}>
+          <h2>{status}</h2>
+          {groupedTasks[status].length === 0 ? (
+            <p>No tasks in this status.</p>
+          ) : (
+            <ul>
+              {groupedTasks[status].map((task) => (
+                <li key={task.task_id}>
+                  <h2>{task.description}</h2>
+                  <p>Priority: {task.priorityDescription}</p>
+                  <p>Client: {task.clientName}</p>
+                  <p>Staff: {task.staffName}</p>
+                  <p>Status: {task.task_statusDescription}</p>
+                  <p>Created Date: {new Date(task.created_date).toLocaleDateString()}</p>
+                  {task.resolved_date && (
+                    <p>Resolved Date: {new Date(task.resolved_date).toLocaleDateString()}</p>
+                  )}
+                  <button onClick={() => handleDeleteTask(task.task_id)}>Delete</button>
+                  {!task.resolved_date && ( // Only show the "Finish" button if the task isn't resolved
+                    <button onClick={() => handleTaskFinish(task.task_id)}>Complete</button>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ))}
     </div>
   );
 }

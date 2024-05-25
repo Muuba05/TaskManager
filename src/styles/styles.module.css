@@ -1,0 +1,104 @@
+.body {
+    margin: 0; /* Remove default body margins */
+    padding: 0; /* Remove default body padding */
+    background-image: url("/Users/macbook/Documents/lab10/task-manager/src/images/background.jpeg"); /* Replace with your image path */
+    background-size: cover; /* Cover the entire viewport */
+    background-repeat: no-repeat; /* Prevent image repetition */
+    background-position: center;
+}
+.h1 {
+    text-align: center; /* Center the heading */
+    margin-top: 20px; /* Add some top margin */
+}
+.nav {
+    background-color: #f0f0f0; /* Light gray background */
+    padding: 20px;
+    border: 1px solid #ddd; /* Subtle bottom border */
+
+    /* Centering using flexbox */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    width: 300px; /* Adjust the width as needed */
+    margin: 0 auto; /* Auto margins to center the element */
+}
+.nav ul {
+    list-style: none; /* Remove default list bullets */
+    margin: 60px;
+    padding: 0;
+    display: flex; /* Arrange items vertically */
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Evenly space items */
+    gap: 60px; /* Spacing between items */
+}
+
+.nav li {
+    /* No margin needed here */
+}
+
+.nav a {
+    text-decoration: none; /* Remove default underline */
+    color: #333; /* Dark gray text color */
+    font-weight: bold;
+    padding: 10px 20px;
+    font-size: 1.5em; 
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth background change */
+}
+
+/* Hover Effect */
+.nav a:hover {
+    background-color: #ddd; /* Light gray background on hover */
+}
+
+/* Active Link Style */
+.nav a.active {
+    background-color: #007bff; /* Blue background for active link */
+    color: #fff; /* White text */
+}
+
+/* Open Menu Styles */
+.nav.navOpen {
+    display: block;
+}
+
+.nav.navOpen ul {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+}
+
+.nav.navOpen li {
+    margin: 10px 0; /* Add spacing between items */
+}
+
+.nav.navOpen a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+/* Close Menu Styles (Default) */
+.nav.navClose {
+    display: none;
+}
+
+.nav.navClose ul {
+    display: none;
+}
+
+.nav.navClose li {
+    margin: 0;
+}
+
+.nav.navClose a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    padding: 0; /* Remove padding when menu is closed */
+    border-radius: 0; /* Remove border-radius when menu is closed */
+    transition: none; /* Remove transition when menu is closed */
+}
