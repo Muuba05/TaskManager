@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/client.module.css';
+import Link from 'next/link';
 
 export default function Client() {
   const [clients, setClients] = useState([]);
@@ -74,6 +75,11 @@ export default function Client() {
   return (
     <div className={styles.clientContainer}>
       <h1 className={styles.clientHeader}>Clients</h1>
+      <div className={styles.returnButtonContainer}>
+        <Link href="/">
+          <button className={styles.returnButton}>Return</button>
+        </Link>
+      </div>
       <div className={styles.formContainer}>
         <input
           className={styles.input}

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/tasks.module.css';
+import Link from 'next/link';
+
 
 export default function Tasks() {
   const [tasks, setTasks] = useState([]);
@@ -167,6 +169,11 @@ export default function Tasks() {
   return (
     <div className={styles.tasksContainer}>
       <h1 className={styles.tasksHeader}>Tasks</h1>
+      <div className={styles.returnButtonContainer}>
+        <Link href="/">
+          <button className={styles.returnButton}>Return</button>
+        </Link>
+      </div>
       <form className={styles.formContainer} onSubmit={handleSubmitNewTask}>
         <label className={styles.label} htmlFor="new-task-description">Description:</label>
         <input

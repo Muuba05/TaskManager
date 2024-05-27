@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/staff.module.css';
+import Link from 'next/link';
 
 export default function Staff() {
   const [staff, setStaff] = useState([]);
@@ -65,6 +66,11 @@ export default function Staff() {
   return (
     <div className={styles.staffContainer}>
       <h1 className={styles.staffHeader}>Staff</h1>
+      <div className={styles.returnButtonContainer}>
+        <Link href="/">
+          <button className={styles.returnButton}>Return</button>
+        </Link>
+      </div>
       <div className={styles.formContainer}>
         <input
           className={styles.input}

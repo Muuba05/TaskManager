@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import styles from '../styles/styles.module.css';
+import styles from '../styles/index.module.css'; // Importing the styles module
 
 export default function Home() {
   const [showMenu, setShowMenu] = useState(false);
@@ -20,18 +20,17 @@ export default function Home() {
   }, [showMenu]);
 
   return (
-    <div>
-      <h1>Task Manager</h1>
+    <div className={styles.tasksContainer}> {}
+      <h1 className={styles.tasksHeader}>Task Manager</h1> {}
       <nav className={`${styles.nav} ${showMenu ? styles.showMenu : ''}`}>
-        <ul>
-          <li><Link href="/tasks" onClick={() => setShowMenu(false)}>Tasks</Link></li>
-          <li><Link href="/clients" onClick={() => setShowMenu(false)}>Clients</Link></li>
-          <li><Link href="/staff" onClick={() => setShowMenu(false)}>Staff</Link></li>
-          <li><Link href="/task_statuses" onClick={() => setShowMenu(false)}>Task Statuses</Link></li>
-          <li><Link href="/log" onClick={() => setShowMenu(false)}>Logs</Link></li>
+        <ul className={styles.ul}> {}
+          <li className={styles.li}><Link href="/tasks" onClick={() => setShowMenu(false)}>Tasks</Link></li> {}
+          <li className={styles.li}><Link href="/clients" onClick={() => setShowMenu(false)}>Clients</Link></li> {}
+          <li className={styles.li}><Link href="/staff" onClick={() => setShowMenu(false)}>Staff</Link></li> {}
+          <li className={styles.li}><Link href="/log" onClick={() => setShowMenu(false)}>Logs</Link></li> {}
         </ul>
       </nav>
-      {/* Your page content here */}
+      {}
     </div>
   );
 }

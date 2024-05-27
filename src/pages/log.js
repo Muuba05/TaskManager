@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/log.module.css';
+import Link from 'next/link';
 
 function LogPage() {
   const [logs, setLogs] = useState([]);
@@ -52,6 +53,11 @@ function LogPage() {
   return (
     <div className={styles.logPageContainer}>
       <h2 className={styles.logHeader}>Logs</h2>
+      <div className={styles.returnButtonContainer}>
+        <Link href="/">
+          <button className={styles.returnButton}>Return</button>
+        </Link>
+      </div>
       {showNoLogsMessage && <p className={styles.noLogsMessage}>No logs found.</p>} {/* Show message if no logs */}
       <ul className={styles.logList}>
         {logs.map((log) => (
@@ -63,16 +69,6 @@ function LogPage() {
               <strong>Created Date:</strong> {new Date(log.created_date).toLocaleString()}
             </div>
             <button className={styles.button} onClick={() => handleDeleteLog(log.log_id)}>Delete</button>
-            <div>
-              <button className={styles.button}>Show More Task Details</button>
-              {/* This button would expand a section below with task details */}
-              <div style={{ display: 'none' }}>
-                {/* Task details would be displayed here */}
-                <strong>Assigned by:</strong> {/* Fetch staff name here */}
-                <strong>Resolved by:</strong> {/* Fetch staff name here */}
-                {/* Add other task details as needed */}
-              </div>
-            </div>
           </li>
         ))}
       </ul>

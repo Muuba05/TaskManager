@@ -1,4 +1,6 @@
-.clientContainer {
+/* index.module.css */
+
+.tasksContainer {
     font-family: Arial, sans-serif;
     background-color: #f0f8ff; /* Light blue background */
     color: #333;
@@ -6,7 +8,7 @@
     border-radius: 10px;
   }
   
-  .clientHeader {
+  .tasksHeader {
     color: #1e90ff; /* Dodger blue */
   }
   
@@ -17,13 +19,15 @@
     margin-bottom: 20px;
     border-radius: 10px;
   }
-  .returnButtonContainer {
-    position: absolute;
-    top: 20px; /* Adjust top position as needed */
-    right: 20px; /* Adjust right position as needed */
+  
+  .label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
   }
   
-  .input {
+  .input,
+  .select {
     width: 100%;
     padding: 8px;
     margin-bottom: 12px;
@@ -31,18 +35,27 @@
     border-radius: 5px;
   }
   
-  .button , .returnButton {
+  .button {
     background-color: #1e90ff; /* Dodger blue background */
     color: white;
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 10px;
+    margin-right: 10px;
   }
   
-  .button:hover , .returnButton:hover{
+  .button:hover {
     background-color: #1c86ee; /* Slightly darker blue on hover */
+  }
+  
+  .alert {
+    background-color: #87cefa; /* Light sky blue */
+    color: #1e90ff; /* Dodger blue */
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    text-align: center;
   }
   
   .ul {

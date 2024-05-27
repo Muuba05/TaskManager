@@ -17,7 +17,7 @@ export default async function handler(req, res) {
       });
       const formattedTasks = tasks.map(task => ({
         ...task, 
-        priorityDescription: task.priority.description ,
+        priorityDescription: task.priority.description,
         task_statusDescription: task.task_status.description,
         clientName: task.client.name,
         staffName: task.staff.name,
@@ -40,10 +40,10 @@ export default async function handler(req, res) {
       const task = await prisma.task.create({
         data: {
           description,
-          priority: { connect: { priority_id: convertedIds.priority_id } }, // Use the correct field name
-          client: { connect: { client_id: convertedIds.client_id } }, // Use the correct field name
-          staff: { connect: { staff_id: convertedIds.staff_id } }, // Use the correct field name
-          task_status: { connect: { task_status_id: convertedIds.task_status_id } }, // Use the correct field name
+          priority: { connect: { priority_id: convertedIds.priority_id } }, 
+          client: { connect: { client_id: convertedIds.client_id } }, 
+          staff: { connect: { staff_id: convertedIds.staff_id } }, 
+          task_status: { connect: { task_status_id: convertedIds.task_status_id } }, 
           created_date: new Date(),
         },
       });
@@ -57,41 +57,41 @@ export default async function handler(req, res) {
     } catch (error) {
       res.status(500).json({ error: 'Error creating task' });
     }
-  } else if (req.method === 'DELETE') {
+  } if (req.method === 'DELETE') {
     const taskId = parseInt(req.query.taskId, 10);
-    console.log("task id is", taskId)
+    console.log("Task ID is", taskId);
+    
     try {
-      const deletedTask = await prisma.task.delete({
-        where: {
-          task_id: taskId, 
-        },
+      // Find the task to ensure it exists
+      const deletedTask = await prisma.task.findUnique({
+        where: { task_id: taskId }
       });
-      if (!deletedTask.task_id) {
+
+      if (!deletedTask) {
         throw new Error('Task not found!');
       }
+
+      // Log the deletion
       await prisma.log.create({
         data: {
-          deletedTask: { connect: { task_id: deletedTask.task_id } },
+          task_id: taskId, // Directly using task_id instead of task relationship
           description: `Task "${deletedTask.description}" deleted.`,
-          // Add other log properties if needed 
-          // For example, if you want to add staff and client information:
-          staff: deletedTask.staff ? {
-            connect: { staff_id: deletedTask.staff.staff_id }
-          } : null,
-          client: deletedTask.client ? {
-            connect: { client_id: deletedTask.client.client_id }
-          } 
-          : null,
-          task: {
-            connect: { task_id: deletedTask.task_id }
-          },
+          created_date: new Date(),
         }
       });
+
+      // Call the stored procedure to delete the task
+      await prisma.$executeRaw`CALL delete_task(${taskId})`;
+
+      // Respond with the deleted task
       res.status(200).json(deletedTask);
     } catch (error) {
+      console.error('Error deleting task:', error);
       res.status(500).json({ error: 'Error deleting task' });
+    } finally {
+      await prisma.$disconnect();
     }
-  }  else {
+  } else {
     res.status(405).json({ error: 'Method not allowed' });
   }
 }

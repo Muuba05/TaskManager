@@ -17,7 +17,11 @@
     margin-bottom: 20px;
     border-radius: 10px;
   }
-  
+  .returnButtonContainer {
+    position: absolute;
+    top: 20px; /* Adjust top position as needed */
+    right: 20px; /* Adjust right position as needed */
+  }
   .input {
     width: 100%;
     padding: 8px;
@@ -26,7 +30,7 @@
     border-radius: 5px;
   }
   
-  .button {
+  .button , .returnButton {
     background-color: #1e90ff; /* Dodger blue background */
     color: white;
     padding: 10px 15px;
@@ -36,7 +40,7 @@
     margin-top: 10px;
   }
   
-  .button:hover {
+  .button:hover , .returnButton:hover{
     background-color: #1c86ee; /* Slightly darker blue on hover */
   }
   
